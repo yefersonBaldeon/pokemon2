@@ -9,6 +9,8 @@ import axios from "axios";
 const App = () => {
   const [One, setOne] = useState({});
   const [refresh, setRefresh] = useState(false);
+   
+  const [id, setid] = useState(null)
 
   useEffect(() => {
     const api = async () => {
@@ -34,22 +36,42 @@ const App = () => {
 
   };
 
+  const api3 = async () => {
+  
+    const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+    const response2 = await axios.get(url);
+    setOne({ ...response2.data });
+  };
+
   return (
     <div className="bg-black h-screen flex flex-col justify-center p-10">
       <div className="container flex flex-col  justify-center items-center">
         <img
-          className="w-1/3"
+          className="w-1/4"
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/1200px-International_Pok%C3%A9mon_logo.svg.png"
           alt=""
         />
+        <input type="text" className="p-1 bg-black border border-white text-white" placeholder="Search" value={id} onChange={(e)=>{
+            setid(e.target.value)
+             
+        }} />
+        {/* <div className="text-white">{id}</div> */}
         <img
-          className="w-40 rounded-xl border-white border-2"
+          className="w-30 rounded-xl border-white border-2 m-2"
           src={One.sprites?.front_default}
           alt=""
         />
 
         <button
-          className="bg-blue-500 w-1/3 py-4 rounded-xl mt-5 text-white text-xl font-light mb-4"
+          className="bg-yellow-500 w-1/3 py-2 rounded-xl  text-white text-xl font-light mb-4"
+          onClick={() => {api3()
+            setid("")          
+          }}
+        >
+          Buscar
+        </button>
+        <button
+          className="bg-blue-500 w-1/3 py-2 rounded-xl  text-white text-xl font-light mb-4"
           onClick={() => {
             setRefresh(!refresh);
           }}
@@ -57,7 +79,7 @@ const App = () => {
           Aleatorio
         </button>
         <button
-          className="bg-red-500 w-1/3 py-4 rounded-xl text-white text-xl font-light"
+          className="bg-red-500 w-1/3 py-2 rounded-xl text-white text-xl font-light"
           onClick={handleClick}
         >
           Contador
