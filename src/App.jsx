@@ -4,6 +4,7 @@ import getRandomNumber from "./utils/aleatorio";
 
 import Type from "./Type";
 
+import axios from "axios";
 
 const App = () => {
   const [One, setOne] = useState({});
@@ -13,9 +14,9 @@ const App = () => {
     const api = async () => {
       const url = `https://pokeapi.co/api/v2/pokemon/${getRandomNumber()}`;
 
-      const response = await fetch(url);
-      const data = await response.json();
-      setOne({ ...data });
+      const response2 = await axios.get(url);
+
+      setOne({ ...response2.data });
     };
     api();
   }, [refresh]);
@@ -24,13 +25,13 @@ const App = () => {
     let a = parseInt(One.id) + 1;
 
     const url = `https://pokeapi.co/api/v2/pokemon/${a}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    setOne({ ...data });
+    const response2 = await axios.get(url);
+    setOne({ ...response2.data });
   };
 
   const handleClick = () => {
     api2();
+
   };
 
   return (
@@ -41,7 +42,11 @@ const App = () => {
           src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/1200px-International_Pok%C3%A9mon_logo.svg.png"
           alt=""
         />
-        <img className="w-40 rounded-xl border-white border-2"  src={One.sprites?.front_default} alt="" />
+        <img
+          className="w-40 rounded-xl border-white border-2"
+          src={One.sprites?.front_default}
+          alt=""
+        />
 
         <button
           className="bg-blue-500 w-1/3 py-4 rounded-xl mt-5 text-white text-xl font-light mb-4"
@@ -77,8 +82,6 @@ const App = () => {
             })}
           </ul>
         </div>
-
-
       </div>
     </div>
   );
